@@ -1,5 +1,9 @@
-## Beth's GTSeq protocol
+## GTSeq protocol for the Palumbi Lab
 
+### This is a modified pipeline from Campbell et al.'s 2014 Genotypying-in-Thousands by Sequencing
+Reference: http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12357/full
+
+Campbell's github: https://github.com/GTseq/GTseq-Pipeline
  
 ### Create Primer3 input file
 This is complicated! Be careful that your files are formatted correctly. 
