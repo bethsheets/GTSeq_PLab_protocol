@@ -7,34 +7,39 @@ Campbell's github: https://github.com/GTseq/GTseq-Pipeline
  
 ### Create Primer3 input file
 
- 1) Make a text file of contigs of interest (if you have duplicate contigs, keep them as duplicates)
- 	
- 2) Grab these contigs of interest from your assembly
- 
-`python extract_multiple_contigs_by_name.py assembly.fa contigs_names.txt single`
+ 1) Generate a text file of your SNPs of interest with two tab delimited columns (Contig SNP)
 
-- contig_names.txt is a list of the contig names that include a SNP of interest. 
+- for ex: 
+`Contig1 3`
+- I refer to this file as contigs-snps.txt in the protocol.
+ 	
+2) Grab your contigs of interest from your assembly. 
+
+- You can generate a list of contigs from the contigs-snps.txt file above
+`awk '{print $1}' contigs-snps.fasta > contig_names.fasta`
+
+- If you have multiple SNPs from the same contig, keep these duplicate contig IDs.
+ 
+- Grab contigs from your assembly with:
+`python extract_multiple_contigs_by_name.py assembly.fa contig_names.txt single`
+
+- single outputs all contigs into a single file (alternatively, you could use multiple to get a different file for each contig).
 - This outputs "contigs.fasta"
 
-If you have TRINITY contig name formats in your file, you need to do some extra editing:
+IMPORTANT: If you have TRINITY contig name formats in your file, you need to do some extra editing before moving on:
 
 - remove extra information from header
-`awk '{print $1}' contigs.tmp.fasta` 
+`awk '{print $1}' contigs.fasta` 
 
 3) Reformat contigs.fasta to be a single line fasta file
 
 `awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' < contigs.fasta > contigs_oneline.txt`
 
-4) Reformat contig names to be what the GTseq pipeline likes (i.e. Species_contig-SNP)
+4) Reformat fasta headers to be what the GTseq pipeline likes (i.e. Species_contig-SNP)
 
-4)
-a) Generate a text file of your SNPs of interest with two tab delimited columns (Contig SNP)
-- for ex: Contig1 3
-- I call this file contigs-snps.txt below
-- This MUST be in the same order as the contigs.fasta file you generated above!
-
-4)
-b) Reformat contig-snps.txt to be Species_Contig-SNP:  
+- use your contigs-snps.txt file from above
+- Your contigs-snps.txt and contigs.fasta files MUST be in the same order.
+- Reformat contig-snps.txt to be Species_Contig-SNP:  
 
 If you have Contig & TRINITY names:
 `awk '{print $1,$2}' contig-snps.txt | sed 's/Contig/>YourSpeciesName_Contig/g' | sed 's/TRINITY/>YourSpeciesName_TRINITY/g' | sed 's/ /-/g' > GTSeq_names.txt`
@@ -42,8 +47,7 @@ If you have Contig & TRINITY names:
 If you have only Contig names:
 `awk '{print $1,$2}' contig-snps.txt | sed 's/Contig/>YourSpeciesName_Contig/g' | sed 's/ /-/g' > GTSeq_names.txt`
 
-5) Replace with GTseq names in your contigs_oneline.txt and return to fasta format
-- This is a simple paste. Your file of names and your contigs.fasta assembly file must be in the same order!
+5) Replace headers with GTseq names in your contigs_oneline.txt and return to fasta format
 
 `paste GTSeq_names.txt contigs_oneline.txt | awk '{print $1"\n"$3}' > Primer3_input.fasta`
 
