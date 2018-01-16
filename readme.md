@@ -29,7 +29,7 @@ Campbell's github: https://github.com/GTseq/GTseq-Pipeline
 IMPORTANT: If you have TRINITY contig name formats in your file, you need to do some extra editing before moving on:
 
 - remove extra information from header
-`awk '{print $1}' contigs.fasta` 
+`awk '{print $1}' contigs.fasta > contigs.fasta` 
 
 3) Reformat contigs.fasta to be a single line fasta file
 
