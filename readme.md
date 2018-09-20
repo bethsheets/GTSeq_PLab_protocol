@@ -38,7 +38,7 @@ IMPORTANT: If you have TRINITY contig name formats in your file, you need to do 
 4) Reformat fasta headers to be what the GTseq pipeline likes (i.e. Species_contig-SNP)
 
 - use your contigs-snps.txt file from above
-- Your contigs-snps.txt and contigs2.fasta files MUST be in the same order.
+- Your contigs-snps.txt and contigs2.fasta (or contigs.fasta if you did not have TRINITY contig names) files MUST be in the same order.
 - Reformat contigs-snps.txt to be Species_Contig-SNP:  
 
 If you have Contig & TRINITY names:
